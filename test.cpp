@@ -1,4 +1,7 @@
 #include<iostream>
+#include<time.h>
+#include<fstream>
+#include<string>
 using namespace std;
 
 // Selection Sort
@@ -28,21 +31,6 @@ void SelectionSort(int a[], int n)
     }
 }
 // Insertion Sort
-void InsertionSort(int a[], int n)
-{
-    int current;
-    for (int i = 1; i < n; i++)
-    {
-        current = a[i];
-        int j = i - 1;
-        while (j >= 0 && a[j] > current)
-        {
-            a[j + 1] = a[j];
-            j = j - 1;
-        }
-        a[j + 1] = current;
-    }
-}
 
 // Binary Insertion Sort
 // Ham tim kiem nhi phan
@@ -76,23 +64,6 @@ long binary_search(long* a, long l, long r, long key){
         }
     }
     return -1;
-}
-// Ham sap xep mang voi vi tri da tim kiem
-void BinaryInsertionSort(long a[], long n)
-{
-    long vt, j, key, i;
-    for (i = 1; i < n; ++i)
-    {
-        j = i - 1;
-        key = a[i];
-        vt = binary_search(a,0,j,key);
-        while (j >= vt)
-        {
-            a[j + 1] = a[j];
-            j = j - 1;
-        }
-        a[j + 1] = key;
-    }
 }
 
 // Bubble Sort
@@ -160,62 +131,62 @@ void RadixSort(long a[], long n) {
 }
 
 // Flash Sort
-void FlashSort(int a[], int n)
-{
-    int min = a[0];
-    int max = 0;
-    int m = int(0.45 * n);
-    int* A = new int[m];
-    for (int i = 0; i < m; i++)
-    {
-        A[i] = 0;
-    }
-    for (int i = 1; i < n; i++)
-    {
-        if (a[i] < min)
-            min = a[i];
-        if (a[i] > a[max])
-            max = i;
-    }
-    if (a[max] == min)
-        return;
-    double c = (double)(m - 1) / (a[max] - min);
-    for (int i = 0; i < n; i++)
-    {
-        int k = int(c * (a[i] - min));
-        ++A[k];
-    }
-    for (int i = 1; i < m; i++)
-    {
-        A[i] += A[i - 1];
-    }
-    Swap(a[max], a[0]);
-    int nmove = 0;
-    int j = 0;
-    int k = m - 1;
-    int t = 0;
-    int flash;
-    while (nmove < n - 1)
-    {
-        while (j > A[k] - 1)
-        {
-            j++;
-            k = int(c * (a[j] - min));
-        }
-        flash = a[j];
-        if (k < 0) break;
-        while (j != A[k])
-        {
-            k = int(c * (flash - min));
-            int hold = a[t = --A[k]];
-            a[t] = flash;
-            flash = hold;
-            ++nmove;
-        }
-    }
-    delete[] A;
-    InsertionSort(a, n);
-}
+// void FlashSort(int a[], int n)
+// {
+//     int min = a[0];
+//     int max = 0;
+//     int m = int(0.45 * n);
+//     int* A = new int[m];
+//     for (int i = 0; i < m; i++)
+//     {
+//         A[i] = 0;
+//     }
+//     for (int i = 1; i < n; i++)
+//     {
+//         if (a[i] < min)
+//             min = a[i];
+//         if (a[i] > a[max])
+//             max = i;
+//     }
+//     if (a[max] == min)
+//         return;
+//     double c = (double)(m - 1) / (a[max] - min);
+//     for (int i = 0; i < n; i++)
+//     {
+//         int k = int(c * (a[i] - min));
+//         ++A[k];
+//     }
+//     for (int i = 1; i < m; i++)
+//     {
+//         A[i] += A[i - 1];
+//     }
+//     Swap(a[max], a[0]);
+//     int nmove = 0;
+//     int j = 0;
+//     int k = m - 1;
+//     int t = 0;
+//     int flash;
+//     while (nmove < n - 1)
+//     {
+//         while (j > A[k] - 1)
+//         {
+//             j++;
+//             k = int(c * (a[j] - min));
+//         }
+//         flash = a[j];
+//         if (k < 0) break;
+//         while (j != A[k])
+//         {
+//             k = int(c * (flash - min));
+//             int hold = a[t = --A[k]];
+//             a[t] = flash;
+//             flash = hold;
+//             ++nmove;
+//         }
+//     }
+//     delete[] A;
+//     InsertionSort(a, n);
+// }
 
 void printArray(long a[], long n)
 {
@@ -235,9 +206,8 @@ long* createData(long n){
 }
 int main()
 {
-	long *a=createData(10000);
 	int n = 10000;
-    BinaryInsertionSort(a,n);
-    printArray(a,n);
+    cout<<(rand() %100)<<" "<<(rand() %100);
+
 	return 0;
 }

@@ -193,38 +193,27 @@ long findMax(long a[], long n) {
     return max;
 }
 // Ham sap xep cac phan tu theo thu tu so luong chu so
-void CountingSort(long a[], long n, long digit) {
-    const long max = 10;
-    long A[5];
-    long count[max];
-    for (long i = 0; i < max; i++)
-    {
-        count[i] = 0;
-    }
-    for (long i = 0; i < n; i++)
-    {
-        count[(a[i] / digit) % 10]++;
-    }
-    for (long i = 1; i < max; i++)
-    {
+void CountSort(long arr[], long n, long exp)
+{
+    long output[n];
+    long i, count[10] = { 0 };
+    for (i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
+    for (i = 1; i < 10; i++)
         count[i] += count[i - 1];
+    for (i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
     }
-    for (long i = n - 1; i >= 0; i--) 
-    {
-        A[count[(a[i] / digit) % 10] - 1] = a[i];
-        count[(a[i] / digit) % 10]--;
-    }
-    for (long i = 0; i < n; i++)
-    {
-        a[i] = A[i];
-    }
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
 }
 // Ham chinh cua Radix Sort
 void RadixSort(long a[], long n) {
     long max = findMax(a, n);
     for (long digit = 1; max / digit > 0; digit *= 10)
     {
-        CountingSort(a, n, digit);
+        CountSort(a, n, digit);
     }
 }
 
@@ -298,7 +287,7 @@ long** createData(long n){
     long** data=new long*[3];
     data[0]= new long[n];
     for(long i=0; i<n; i++){
-        data[0][i]= Rand(0,100000);
+        data[0][i]= Rand(0,n);
     }
 
     //sorted
