@@ -195,7 +195,7 @@ long findMax(long a[], long n) {
 // Ham sap xep cac phan tu theo thu tu so luong chu so
 void CountSort(long arr[], long n, long exp)
 {
-    long output[n];
+    long *output= new long[n];
     long i, count[10] = { 0 };
     for (i = 0; i < n; i++)
         count[(arr[i] / exp) % 10]++;

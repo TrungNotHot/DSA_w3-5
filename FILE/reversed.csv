@@ -1,0 +1,6 @@
+Size,SelectionSort,InsertionSort,BubbleSort,ShakerSort,ShellSort,MergeSort,QuickSort,RadixSort,FlashSort
+1000,3,3,7,0,0,4,0,1,1
+3000,26,31,65,0,1,16,0,1,0
+10000,511,354,858,1,1,438,1,2,1
+30000,4353,2924,6187,1,6,4569,4,8,3
+100000,37186,25987,64881,4,19,21438,10,26,8
