@@ -46,21 +46,35 @@ void InsertionSort(int a[], int n)
 
 // Binary Insertion Sort
 // Ham tim kiem nhi phan
-int BinarySearch(int* a, int left, int right, int key)
-{
-    if (right >= left)
-    {
-        int mid = (left + right) / 2;
-        if (*(a + mid) == key)
-        {
-            return mid;
+// int BinarySearch(int* a, int left, int right, int key)
+// {
+//     if (right >= left)
+//     {
+//         int mid = (left + right) / 2;
+//         if (*(a + mid) == key)
+//         {
+//             return mid;
+//         }
+//         if (*(a + mid) > key)
+//         {
+//             return BinarySearch(a, left, mid - 1, key);
+//         }
+//         return BinarySearch(a, mid + 1, right, key);
+//     }
+// }
+int binary_search(int* a, int l, int r, int key){
+    int left=l, right=r;
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(key==*(a+mid)) return mid;
+        else if(key > *(a+mid)){
+            left=mid+1;
         }
-        if (*(a + mid) > key)
-        {
-            return BinarySearch(a, left, mid - 1, key);
+        else if(key<*(a+mid)){
+            right=mid-1;
         }
-        return BinarySearch(a, mid + 1, right, key);
     }
+    return -1;
 }
 // Ham sap xep mang voi vi tri da tim kiem
 void BinaryInsertionSort(int a[], int n)
@@ -70,7 +84,7 @@ void BinaryInsertionSort(int a[], int n)
     {
         j = i - 1;
         key = a[i];
-        vt = BinarySearch(a, 0, j, key);
+        vt = binary_search(a, 0, j, key);
         while (j >= vt)
         {
             a[j + 1] = a[j];
@@ -214,12 +228,7 @@ int main()
 {
 	int a[] = { 10,5,15,25,20 };
 	int n = sizeof(a)/sizeof(a[0]);
-    //SelectionSort(a, n);
-    //InsertionSort(a, n);
-    //BinaryInsertionSort(a, n);
-    //BubbleSort(a, n);
-    //RadixSort(a, n);
-    //FlashSort(a, n);
+    BinaryInsertionSort(a, n);
 	printArray(a, n);
 	return 0;
 }
