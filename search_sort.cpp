@@ -72,20 +72,22 @@ void ShakerSort(long* arr, long l, long r){
     long left=l;
     long right=r;
     long k=0;
-    for(long i=left;i<right; i++){
-        if(arr[i]>arr[i+1]){
-            swap(arr[i], arr[i+1]);
-            k=i;
+    while(left<=right){
+        for(long i=left;i<right; i++){
+            if(arr[i]>arr[i+1]){
+                swap(arr[i], arr[i+1]);
+                k=i;
+            }
         }
-    }
-    right=k;
-    for(long i=right; i>left; i--){
-        if(arr[i]<arr[i-1]){
-            swap(arr[i], arr[i - 1]);
-			k = i;
+        right=k;
+        for(long i=right; i>left; i--){
+            if(arr[i]<arr[i-1]){
+                swap(arr[i], arr[i - 1]);
+                k = i;
+            }
         }
+        left=k;
     }
-    left=k;
 }
 
 void Swap(long& a, long& b)
@@ -130,41 +132,38 @@ void InsertionSort(long a[], long n)
     }
 }
 
-// Binary Insertion Sort
-// Ham tim kiem nhi phan
-// long BinarySearch(long* a, long left, long right, long key)
-// {
-//     if (right >= left)
-//     {
-//         long mid = (left + right) / 2;
-//         if (*(a + mid) == key)
-//         {
-//             return mid;
-//         }
-//         if (*(a + mid) > key)
-//         {
-//             return BinarySearch(a, left, mid - 1, key);
-//         }
-//         return BinarySearch(a, mid + 1, right, key);
-//     }
-// }
-// Ham sap xep mang voi vi tri da tim kiem
-// void BinaryInsertionSort(long a[], long n)
-// {
-//     long vt, j, key;
-//     for (long i = 1; i < n; ++i)
-//     {
-//         j = i - 1;
-//         key = a[i];
-//         vt = BinarySearch(a, 0, j, key);
-//         while (j >= vt)
-//         {
-//             a[j + 1] = a[j];
-//             j = j - 1;
-//         }
-//         a[j + 1] = key;
-//     }
-// }
+//Binary Insertion Sort
+//Ham tim kiem nhi phan
+long binarySearch(long a[], long key,long left, long right){
+    if (right <= left){
+        return (key > a[left])? (left + 1) : left;
+    }
+    long mid = (left + right) / 2;
+    if (key == a[mid]){
+        return mid + 1;
+    }
+    if (key > a[mid]){
+        return binarySearch(a, key,mid + 1, right);
+    }
+    return binarySearch(a, key, left,mid - 1);
+}
+void BinaryInsertionSort(long a[], long n)
+{
+    long i, idx, j, selected;
+  
+    for (i = 1; i < n; ++i)
+    {
+        j = i - 1;
+        selected = a[i];
+        idx = binarySearch(a, selected, 0, j);
+        while (j >= idx)
+        {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = selected;
+    }
+}
 
 // Bubble Sort
 void BubbleSort(long a[], long n)
@@ -217,6 +216,7 @@ void RadixSort(long a[], long n) {
     }
 }
 
+//FLASH SORT
 void FlashSort(long a[], long n)
 {
     long min = a[0];
@@ -272,6 +272,76 @@ void FlashSort(long a[], long n)
     }
     delete[] A;
     InsertionSort(a, n);
+}
+
+// HEAP SORT
+void heapify(long a[], long size, long i) // ham tao ra max heap => node father > node son
+{
+	long nodeFather = i; //Luu lai vi tri node father
+	long l = 2 * i + 1; // node left cua node father
+	long r = 2 * i + 2; // node right cua node father
+
+	// Kiem tra tinh chat cua max heap
+	if (l < size && a[l] > a[nodeFather])
+		nodeFather = l;
+	if (r < size && a[r] > a[nodeFather])
+		nodeFather = r;
+
+	// Neu node father khong phai la lon nhat swap voi node son do
+	if (nodeFather != i)
+	{
+		swap(a[i], a[nodeFather]);
+
+		// De quy lai ham heapify.
+        // De kiem tra xem tai node son sau khi swap co thoa tinh chat cua max heap ko
+		heapify(a, size, nodeFather);
+	}
+}
+void HeapSort(long a[], long size)
+{
+	for (long i = size / 2 - 1; i >= 0; i--)
+    //bat dau thuat toan tai Last node father, lan luot di qua tung node father khac phia truoc
+		heapify(a, size, i);
+    
+	for (long i = size - 1; i >= 0; i--)
+	{
+        // Dua node root luc nay la max node ve cuoi mang
+		swap(a[0], a[i]);
+
+		// goi ham heapify de tao max heap moi, sau khi max node dc sap xep
+		heapify(a, i, 0);
+	}
+}
+
+//COUNTING SORT
+void CountingSort(long a[], long n)
+{
+
+    long* output=new long[n]; // Tao mang dem phan tu
+    long max = a[0];
+    long min = a[0];
+    for (long i = 1; i < n; i++)
+    {
+        if (a[i] > max)
+            max = a[i];
+        else if (a[i] < min)
+            min = a[i]; 
+    }
+    long range = max - min + 1;// So phan tu cua mang a
+    long count[range]={0};
+    for (long i = 0; i < n; i++)
+        count[a[i] - min]++;
+    for (long i = 1; i < range; i++)
+        count[i] += count[i - 1];
+    for (long i = n-1; i>=0; i--)
+    {
+        output[count[a[i] - min] - 1] = a[i];
+        count[a[i] - min]--;
+    }
+    for (long i = 0; i < n; i++)
+    {
+        a[i] = output[i];
+    }
 }
 
 //Cai Dat
@@ -349,10 +419,13 @@ void saveAfterSort(long* data,const char* size,const char* state){
     writeToTXT(clone,timeUsed[1],NameOfSort[1],size,state);
     delete clone;
 
-    // start=clock();
-    // BinaryInsertionSort(data,stol(size));
-    // end=clock();
-    // timeUsed[2]=(double)(end-start) / CLOCKS_PER_SEC;
+    copyData(data,clone,stol(size));
+    start=clock();
+    BinaryInsertionSort(clone,stol(size));
+    end=clock();
+    timeUsed[2]=(double)(end-start) / CLOCKS_PER_SEC;
+    writeToTXT(clone,timeUsed[2],NameOfSort[2],size,state);
+    delete clone;
 
     copyData(data,clone,stol(size));
     start=clock();
@@ -378,10 +451,13 @@ void saveAfterSort(long* data,const char* size,const char* state){
     writeToTXT(clone,timeUsed[5],NameOfSort[5],size,state);
     delete clone;
 
-    // start=clock();
-    // HeapSort(data,0,stol(size)-1);
-    // end=clock();
-    //timeUsed[6]=(double)(end-start) / CLOCKS_PER_SEC;
+    copyData(data,clone,stol(size));
+    start=clock();
+    HeapSort(clone,stol(size));
+    end=clock();
+    timeUsed[6]=(double)(end-start) / CLOCKS_PER_SEC;
+    writeToTXT(clone,timeUsed[6],NameOfSort[6],size,state);
+    delete clone;
 
     copyData(data,clone,stol(size));
     start=clock();
@@ -399,10 +475,13 @@ void saveAfterSort(long* data,const char* size,const char* state){
     writeToTXT(clone,timeUsed[8],NameOfSort[8],size,state);
     delete clone;
 
-    // start=clock();
-    // CountingSort(data,0,stol(size)-1);
-    // end=clock();
-    // timeUsed[9]=(double)(end-start) / CLOCKS_PER_SEC;
+    copyData(data,clone,stol(size));
+    start=clock();
+    CountingSort(clone,stol(size));
+    end=clock();
+    timeUsed[9]=(double)(end-start) / CLOCKS_PER_SEC;
+    writeToTXT(clone,timeUsed[9],NameOfSort[9],size,state);
+    delete clone;
 
     copyData(data,clone,stol(size));
     start=clock();
