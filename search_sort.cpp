@@ -3,6 +3,38 @@
 #include<fstream>
 #include<string>
 using namespace std;
+//LINEAR SEARCH
+int linearSearch(int a[], int n, int x)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] == x)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+//BINARY SEARCH
+int binarySearch(int a[], int left, int right, int key)
+{
+    if (right >= left)
+    {
+        int mid = (left + right) / 2;
+        if (a[mid] == key)
+        {
+            return mid;
+        }
+        if (a[mid] > key)
+        {
+            return binarySearch(a, left, mid - 1, key);
+        }
+        return binarySearch(a, mid + 1, right, key);
+    }
+    return -1;
+}
+
 //MERGE SORT
 void Merge(long* a, long from, long mid, long to){
     long first1=from, last1=mid;
