@@ -17,22 +17,18 @@ int linearSearch(int a[], int n, int x)
 }
 
 //BINARY SEARCH
-int binarySearch(int a[], int left, int right, int key)
-{
-    if (right >= left)
-    {
-        int mid = (left + right) / 2;
-        if (a[mid] == key)
-        {
-            return mid;
-        }
-        if (a[mid] > key)
-        {
-            return binarySearch(a, left, mid - 1, key);
-        }
-        return binarySearch(a, mid + 1, right, key);
+long binarySearch(long a[], long key,long left, long right){
+    if (right <= left){
+        return (key > a[left])? (left + 1) : left;
     }
-    return -1;
+    long mid = (left + right) / 2;
+    if (key == a[mid]){
+        return mid + 1;
+    }
+    if (key > a[mid]){
+        return binarySearch(a, key,mid + 1, right);
+    }
+    return binarySearch(a, key, left,mid - 1);
 }
 
 //MERGE SORT
@@ -104,7 +100,7 @@ void ShakerSort(long* arr, long l, long r){
     long left=l;
     long right=r;
     long k=0;
-    while(left<=right){
+    while(left<right){
         for(long i=left;i<right; i++){
             if(arr[i]>arr[i+1]){
                 swap(arr[i], arr[i+1]);
@@ -165,20 +161,6 @@ void InsertionSort(long a[], long n)
 }
 
 //Binary Insertion Sort
-//Ham tim kiem nhi phan
-long binarySearch(long a[], long key,long left, long right){
-    if (right <= left){
-        return (key > a[left])? (left + 1) : left;
-    }
-    long mid = (left + right) / 2;
-    if (key == a[mid]){
-        return mid + 1;
-    }
-    if (key > a[mid]){
-        return binarySearch(a, key,mid + 1, right);
-    }
-    return binarySearch(a, key, left,mid - 1);
-}
 void BinaryInsertionSort(long a[], long n)
 {
     long i, idx, j, selected;
